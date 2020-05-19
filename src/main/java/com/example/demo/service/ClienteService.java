@@ -13,11 +13,8 @@ import org.springframework.stereotype.Service;
 import com.example.demo.DTO.ClienteDTO;
 import com.example.demo.Repositories.ClienteRepository;
 import com.example.demo.domain.Cliente;
-import com.example.demo.domain.Cliente;
 import com.example.demo.service.exceptions.DataIntegrityException;
 import com.example.demo.service.exceptions.ObjectNotFoundException;
-
-import net.bytebuddy.implementation.bytecode.Throw;
 
 @Service
 public class ClienteService {
