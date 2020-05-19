@@ -1,5 +1,6 @@
 package com.example.demo.resources;
 
+import java.net.URI;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,8 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.example.demo.DTO.ClienteDTO;
+import com.example.demo.DTO.ClienteNewDTO;
 import com.example.demo.domain.Cliente;
 import com.example.demo.service.ClienteService;
 
@@ -65,5 +68,16 @@ public class ClienteResource {
 				.map(cat -> new ClienteDTO(cat));
 				
 		return ResponseEntity.ok().body(categoriasDTO);
+	}
+	
+
+	@RequestMapping(method = RequestMethod.POST)
+	public ResponseEntity<Void> insert(@Valid @RequestBody ClienteNewDTO categoriaDTO){
+		Cliente cliente = clienteService.fromDTO(categoriaDTO);
+		cliente = clienteService.insert(cliente);
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(cliente.getId()).toUri();
+		
+		return ResponseEntity.created(uri).build();
 	}
 }
