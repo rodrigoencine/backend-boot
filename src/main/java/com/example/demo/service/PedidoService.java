@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.example.demo.Repositories.ItemPedidoRepository;
 import com.example.demo.Repositories.PagamentoRepository;
@@ -40,6 +41,7 @@ public class PedidoService {
 				"Pedido não encontrado" + id + "tipo" + Pedido.class.getName()));
 	}
 	
+	@Transactional
 	public Pedido insert(Pedido pedido) {
 		pedido.setId(null);
 		pedido.setInstante(new Date());
