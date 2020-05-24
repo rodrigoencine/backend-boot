@@ -19,7 +19,10 @@ import com.example.demo.Repositories.EnderecoRepository;
 import com.example.demo.domain.Cidade;
 import com.example.demo.domain.Cliente;
 import com.example.demo.domain.Endereco;
+import com.example.demo.domain.enums.Perfil;
 import com.example.demo.domain.enums.TipoCliente;
+import com.example.demo.security.UserSS;
+import com.example.demo.service.exceptions.AuthorizationException;
 import com.example.demo.service.exceptions.DataIntegrityException;
 import com.example.demo.service.exceptions.ObjectNotFoundException;
 
@@ -35,6 +38,15 @@ public class ClienteService {
 	private EnderecoRepository enderecoRepository;
 	
 	public Cliente buscar(Integer id) {
+		System.out.println(id);
+		UserSS user = UserService.authenticated();
+		System.out.println("KKKKKK" + user.getId());
+		System.out.println("kjkjkj" + user.hasRole(Perfil.ADMIN));
+		if(user == null || (!user.hasRole(Perfil.ADMIN) && !id.equals(user.getId()))) {
+		
+			throw new AuthorizationException("Acesso negado");
+		}
+		
 		Optional<Cliente> cliente = clienteRepository.findById(id);
 		
 		return cliente.orElseThrow(() -> new ObjectNotFoundException(
